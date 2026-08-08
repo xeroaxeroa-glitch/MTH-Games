@@ -1,0 +1,771 @@
+```html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>MTH Store</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    overflow: hidden;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #c7ccd2;
+}
+
+#menu {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    background: #c7ccd2;
+    color: #333;
+}
+
+.topbar {
+    height: 58px;
+    background: linear-gradient(#60666c, #383d42);
+    border-bottom: 3px solid #222;
+    display: flex;
+    align-items: center;
+    padding-left: 22px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.45);
+}
+
+.logo {
+    color: white;
+    font-size: 27px;
+    font-weight: bold;
+    text-shadow: 1px 2px 2px #111;
+    margin-right: 45px;
+}
+
+.homeButton {
+    height: 58px;
+    padding: 0 25px;
+    display: flex;
+    align-items: center;
+    color: white;
+    font-size: 16px;
+    border-left: 1px solid rgba(255,255,255,0.08);
+    border-right: 1px solid rgba(0,0,0,0.3);
+    cursor: pointer;
+}
+
+.homeButton:hover {
+    background: rgba(255,255,255,0.08);
+}
+
+.main {
+    position: absolute;
+    top: 58px;
+    bottom: 38px;
+    left: 0;
+    right: 0;
+    display: flex;
+}
+
+.sidebar {
+    width: 220px;
+    background: linear-gradient(to right, #e1e4e7, #c4c9ce);
+    border-right: 2px solid #999;
+    padding: 28px 20px;
+}
+
+.avatar {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 12px auto;
+    background: linear-gradient(#999, #666);
+    border: 3px solid white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 42px;
+}
+
+.username {
+    text-align: center;
+    font-size: 22px;
+    font-weight: bold;
+    color: #444;
+    margin-bottom: 30px;
+}
+
+.sideButton {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 7px;
+    background: linear-gradient(#eeeeee, #c9c9c9);
+    border: 1px solid #888;
+    box-shadow: inset 0 1px white, 0 1px 2px rgba(0,0,0,0.2);
+    color: #444;
+    font-size: 15px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.sideButton:hover {
+    background: linear-gradient(#ffffff, #d5d5d5);
+}
+
+.content {
+    flex: 1;
+    padding: 35px 45px;
+    overflow: auto;
+}
+
+.gameCard {
+    width: 580px;
+    max-width: 100%;
+    background: #eeeeee;
+    border: 1px solid #888;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.3), inset 0 1px white;
+}
+
+.gameHeader {
+    height: 43px;
+    padding: 0 15px;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(#eeeeee, #c9c9c9);
+    border-bottom: 1px solid #999;
+    font-size: 18px;
+    font-weight: bold;
+    color: #444;
+}
+
+.gameBody {
+    padding: 18px;
+    display: flex;
+    gap: 18px;
+    background: #f5f5f5;
+}
+
+.thumbnail {
+    width: 200px;
+    height: 120px;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+    border: 3px solid #777;
+
+    background:
+        linear-gradient(
+            #75acd2 0%,
+            #a6cfe5 53%,
+            #65a550 54%,
+            #3d7e35 100%
+        );
+
+    box-shadow: inset 0 0 12px rgba(0,0,0,0.35);
+}
+
+.mountain1 {
+    position: absolute;
+    bottom: 55px;
+    left: 20px;
+    width: 85px;
+    height: 55px;
+    background: #647b86;
+
+    clip-path: polygon(
+        0 100%,
+        50% 0,
+        100% 100%
+    );
+}
+
+.mountain2 {
+    position: absolute;
+    bottom: 55px;
+    right: 10px;
+    width: 75px;
+    height: 47px;
+    background: #536b76;
+
+    clip-path: polygon(
+        0 100%,
+        50% 0,
+        100% 100%
+    );
+}
+
+.previewPlayer {
+    position: absolute;
+    left: 84px;
+    bottom: 27px;
+    width: 30px;
+    height: 53px;
+    z-index: 2;
+}
+
+.previewHead {
+    width: 20px;
+    height: 20px;
+    margin: auto;
+    background: #f2b36f;
+    border: 1px solid #a87545;
+}
+
+.previewBody {
+    width: 30px;
+    height: 31px;
+    background: #3674b5;
+    border: 1px solid #24517e;
+}
+
+.gameInfo {
+    padding-top: 2px;
+    flex: 1;
+}
+
+.gameTitle {
+    font-size: 22px;
+    font-weight: bold;
+    color: #444;
+    margin-bottom: 9px;
+}
+
+.description {
+    color: #666;
+    font-size: 13px;
+    line-height: 1.4;
+    margin-bottom: 16px;
+}
+
+#playButton {
+    width: 90px;
+    height: 31px;
+
+    border: 1px solid #315f28;
+    border-radius: 3px;
+
+    background: linear-gradient(#8bc978, #4e963e);
+
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+
+    text-shadow: 1px 1px 2px #31512b;
+
+    box-shadow:
+        inset 0 1px rgba(255,255,255,0.65),
+        0 2px 4px rgba(0,0,0,0.3);
+
+    cursor: pointer;
+}
+
+#playButton:hover {
+    background: linear-gradient(#9cda87, #5da94b);
+}
+
+#playButton:active {
+    transform: translateY(1px);
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 38px;
+
+    background: linear-gradient(#444a4f, #303438);
+
+    border-top: 2px solid #222;
+
+    color: #bbb;
+
+    display: flex;
+    align-items: center;
+
+    padding-left: 20px;
+
+    font-size: 12px;
+}
+
+#game {
+    display: none;
+    position: fixed;
+    inset: 0;
+}
+</style>
+</head>
+
+<body>
+
+<div id="menu">
+
+    <div class="topbar">
+
+        <div class="logo">
+            MTH Store
+        </div>
+
+        <div class="homeButton">
+            Home
+        </div>
+
+    </div>
+
+
+    <div class="main">
+
+        <div class="sidebar">
+
+            <div class="avatar">
+                🧍
+            </div>
+
+            <div class="username">
+                Player
+            </div>
+
+            <div class="sideButton">
+                Profile
+            </div>
+
+            <div class="sideButton">
+                Character
+            </div>
+
+        </div>
+
+
+        <div class="content">
+
+            <div class="gameCard">
+
+                <div class="gameHeader">
+                    By: FromFimo0
+                </div>
+
+
+                <div class="gameBody">
+
+                    <div class="thumbnail">
+
+                        <div class="mountain1"></div>
+
+                        <div class="mountain2"></div>
+
+                        <div class="previewPlayer">
+
+                            <div class="previewHead"></div>
+
+                            <div class="previewBody"></div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="gameInfo">
+
+                        <div class="gameTitle">
+                            My First 3D Game
+                        </div>
+
+                        <div class="description">
+
+                            Explore the world and
+                            discover what's waiting
+                            for you.
+
+                            <br><br>
+
+                            🎮 ZQSD to move
+                            <br>
+
+                            🖱️ Right click to look around
+
+                        </div>
+
+                        <button id="playButton">
+                            PLAY
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer">
+        MTH Store © 2026
+    </div>
+
+</div>
+
+
+<div id="game"></div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+
+<script>
+
+const menu =
+    document.getElementById("menu");
+
+const game =
+    document.getElementById("game");
+
+
+const scene =
+    new THREE.Scene();
+
+scene.background =
+    new THREE.Color(0x87CEEB);
+
+
+const camera =
+    new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth /
+        window.innerHeight,
+        0.1,
+        1000
+    );
+
+
+const renderer =
+    new THREE.WebGLRenderer({
+        antialias: true
+    });
+
+renderer.setSize(
+    window.innerWidth,
+    window.innerHeight
+);
+
+game.appendChild(
+    renderer.domElement
+);
+
+
+const light =
+    new THREE.DirectionalLight(
+        0xffffff,
+        2
+    );
+
+light.position.set(
+    10,
+    20,
+    10
+);
+
+scene.add(light);
+
+
+scene.add(
+    new THREE.AmbientLight(
+        0xffffff,
+        0.6
+    )
+);
+
+
+const ground =
+    new THREE.Mesh(
+        new THREE.BoxGeometry(
+            50,
+            1,
+            50
+        ),
+
+        new THREE.MeshStandardMaterial({
+            color: 0x228B22
+        })
+    );
+
+ground.position.y = -0.5;
+
+scene.add(ground);
+
+
+const player =
+    new THREE.Mesh(
+        new THREE.BoxGeometry(
+            1,
+            2,
+            1
+        ),
+
+        new THREE.MeshStandardMaterial({
+            color: 0xff0000
+        })
+    );
+
+player.position.y = 1;
+
+scene.add(player);
+
+
+let cameraDistance = 7;
+let cameraHeight = 4;
+let cameraYaw = 0;
+let cameraPitch = -0.25;
+
+
+const keys = {};
+
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        keys[
+            event.key.toLowerCase()
+        ] = true;
+
+    }
+);
+
+
+document.addEventListener(
+    "keyup",
+    function(event) {
+
+        keys[
+            event.key.toLowerCase()
+        ] = false;
+
+    }
+);
+
+
+let rightMouse = false;
+
+
+document.addEventListener(
+    "mousedown",
+    function(event) {
+
+        if (event.button === 2) {
+            rightMouse = true;
+        }
+
+    }
+);
+
+
+document.addEventListener(
+    "mouseup",
+    function(event) {
+
+        if (event.button === 2) {
+            rightMouse = false;
+        }
+
+    }
+);
+
+
+document.addEventListener(
+    "contextmenu",
+    function(event) {
+        event.preventDefault();
+    }
+);
+
+
+document.addEventListener(
+    "mousemove",
+    function(event) {
+
+        if (!rightMouse) return;
+
+        const sensitivity = 0.005;
+
+        cameraYaw -=
+            event.movementX *
+            sensitivity;
+
+        cameraPitch -=
+            event.movementY *
+            sensitivity;
+
+        cameraPitch =
+            Math.max(
+                -1.2,
+                Math.min(
+                    0.5,
+                    cameraPitch
+                )
+            );
+
+    }
+);
+
+
+document
+    .getElementById("playButton")
+    .addEventListener(
+        "click",
+        function() {
+
+            menu.style.display = "none";
+
+            game.style.display = "block";
+
+        }
+    );
+
+
+function animate() {
+
+    requestAnimationFrame(
+        animate
+    );
+
+    const speed = 0.12;
+
+
+    const forwardX =
+        Math.sin(cameraYaw);
+
+    const forwardZ =
+        Math.cos(cameraYaw);
+
+
+    const rightX =
+        Math.cos(cameraYaw);
+
+    const rightZ =
+        -Math.sin(cameraYaw);
+
+
+    if (
+        keys["z"] ||
+        keys["arrowup"]
+    ) {
+
+        player.position.x -=
+            forwardX * speed;
+
+        player.position.z -=
+            forwardZ * speed;
+
+    }
+
+
+    if (
+        keys["s"] ||
+        keys["arrowdown"]
+    ) {
+
+        player.position.x +=
+            forwardX * speed;
+
+        player.position.z +=
+            forwardZ * speed;
+
+    }
+
+
+    if (
+        keys["q"] ||
+        keys["arrowleft"]
+    ) {
+
+        player.position.x -=
+            rightX * speed;
+
+        player.position.z -=
+            rightZ * speed;
+
+    }
+
+
+    if (
+        keys["d"] ||
+        keys["arrowright"]
+    ) {
+
+        player.position.x +=
+            rightX * speed;
+
+        player.position.z +=
+            rightZ * speed;
+
+    }
+
+
+    const horizontalDistance =
+        cameraDistance *
+        Math.cos(cameraPitch);
+
+
+    camera.position.x =
+        player.position.x +
+        Math.sin(cameraYaw) *
+        horizontalDistance;
+
+
+    camera.position.z =
+        player.position.z +
+        Math.cos(cameraYaw) *
+        horizontalDistance;
+
+
+    camera.position.y =
+        player.position.y +
+        cameraHeight -
+        Math.sin(cameraPitch) *
+        cameraDistance;
+
+
+    camera.lookAt(
+        player.position.x,
+        player.position.y + 0.8,
+        player.position.z
+    );
+
+
+    renderer.render(
+        scene,
+        camera
+    );
+}
+
+
+animate();
+
+
+window.addEventListener(
+    "resize",
+    function() {
+
+        camera.aspect =
+            window.innerWidth /
+            window.innerHeight;
+
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(
+            window.innerWidth,
+            window.innerHeight
+        );
+
+    }
+);
+
+</script>
+
+</body>
+</html>
+```
+
+C'est fait : **Welcome to MTH Store est supprimé** et **My Games devient `By: FromFimo0`**.
